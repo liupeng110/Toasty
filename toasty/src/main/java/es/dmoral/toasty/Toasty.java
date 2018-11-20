@@ -54,6 +54,7 @@ public class Toasty {
     private static int textSize = 16; // in SP
 
     private static boolean tintIcon = true;
+    private static Toast currentToast;
 
     private Toasty() {
         // avoiding instantiation
@@ -282,7 +283,9 @@ public class Toasty {
     public static Toast custom(@NonNull Context context, @NonNull CharSequence message, Drawable icon,
                                @ColorInt int tintColor, int duration,
                                boolean withIcon, boolean shouldTint) {
-        final Toast currentToast = Toast.makeText(context, "", duration);
+           if (null!=currentToast){ currentToast.cancel(); } //每次toast都先取消 防止一直提示时间叠加
+        currentToast = Toast.makeText(context, "", duration);
+           
         final View toastLayout = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                 .inflate(R.layout.toast_layout, null);
         final ImageView toastIcon = toastLayout.findViewById(R.id.toast_icon);
